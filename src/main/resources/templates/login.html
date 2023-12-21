@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+
+<head>
+	<!-- Mobile Specific Meta -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Favicon-->
+	<link rel="shortcut icon" th:href="@{/img/fav.png}">
+	<!-- Author Meta -->
+	<meta name="author" content="CodePixar">
+	<!-- Meta Description -->
+	<meta name="description" content="">
+	<!-- Meta Keyword -->
+	<meta name="keywords" content="">
+	<!-- meta character set -->
+	<meta charset="UTF-8">
+	<!-- Site Title -->
+	<title>DBShopping</title>
+	<!-- CSS -->
+	<link rel="stylesheet" th:href="@{/css/linearicons.css}">
+	<link rel="stylesheet" th:href="@{/css/owl.carousel.css}">
+	<link rel="stylesheet" th:href="@{/css/themify-icons.css}">
+	<link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+	<link rel="stylesheet" th:href="@{/css/nice-select.css}">
+	<link rel="stylesheet" th:href="@{/css/nouislider.min.css}">
+	<link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+	<link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+
+<body>
+
+	<!--================Login Box Area =================-->
+	<section class="login_box_area p-2">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6 d-none d-lg-block">
+					<div class="login_box_img">
+						<img class="img-fluid" th:src="@{/img/login.jpg}" alt="">
+						<div class="hover">
+							<h4>New to our website?</h4>
+							<p>There are advances being made in science and technology everyday !</p>
+							<a class="primary-btn" th:href="${'/register'+redirect}">Create an Account</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="login_form_inner border">
+						<div>
+							<div id="account-creation-library-success" class="ml-5 mr-5 mb-4 pt-2 pb-2 pr-4 pl-4 l-bg-orange-dark justify-content-center" style="display: none">
+								Your account has been created, please note that you cannot log in until you receive a confirmation email from us!
+							</div>
+							<div id="authenticated-failed" style="display: none" class="mb-4 mr-5 ml-5 justify-content-center error-container">
+								Authentication failed please check your login and password
+							</div>
+							<h3>Log in to enter</h3>
+							<form class="row login_form mt-0" method="post" th:action="${'/login'+redirect}" id="contactForm">
+								<div class="col-md-12 form-group">
+									<input required type="text" class="form-control" id="login" name="login" placeholder="Login" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Login'">
+								</div>
+								<div class="col-md-12 form-group">
+									<input required type="password" class="form-control" id="password" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
+								</div>
+								<div class="col-md-12 form-group">
+									<div class="creat_account">
+										<input type="checkbox" id="f-option2" name="keepMe">
+										<label for="f-option2">Keep me logged in</label>
+									</div>
+								</div>
+								<div class="col-md-12 form-group">
+									<button type="submit" value="submit" class="primary-btn">Log In</button>
+									<div class="d-lg-none p-3 mb-1">
+										<div class="hover">
+											<h6>New to our website? <a th:href="${'/register'+redirect}">create an account</a></h6>
+										</div>
+									</div>
+									<a href="/">Continue as a guest ?</a>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--================End Login Box Area =================-->
+
+	<!--Toast start-->
+	<div id="toast-container-success"
+		 class="toast-container l-bg-orange-dark"
+		 style="display:none; position: fixed; bottom: 20px; left: 20px; z-index: 11; padding: 5px 10px; border-radius: 5px; width: 250px!important; ">
+
+		<div class="toast" role="alert" aria-live="assertive" aria-atomic="true"></div>
+		<div class="toast-header">
+			<strong>Message</strong>
+			<button type="button" class="ml-1 mb-1 close" data-dismiss="toast" aria-label="Close" onclick="hideAlert()">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="toast-body">Your account has been created!</div>
+	</div>
+	<!--Toast end-->
+
+	<script th:src="@{/js/vendor/jquery-2.2.4.min.js}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" 
+			integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+	 		crossorigin="anonymous">
+	 	
+	</script>
+	<script th:src="@{/js/vendor/bootstrap.min.js}" ></script>
+	<script th:src="@{/js/jquery.ajaxchimp.min.js}" ></script>
+	<script th:src="@{/js/jquery.nice-select.min.js}" ></script>
+	<script th:src="@{/js/jquery.sticky.js}" ></script>
+	<script th:src="@{/js/nouislider.min.js}" ></script>
+	<script th:src="@{/js/jquery.magnific-popup.min.js}" ></script>
+	<script th:src="@{/js/owl.carousel.min.js}"></script>
+	<script th:src="@{/js/functions.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+</body>
+
+</html>

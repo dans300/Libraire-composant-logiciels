@@ -1,0 +1,211 @@
+<html  lang="zxx" class="no-js" style="scroll-behavior: smooth;">
+
+<head>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" th:href="@{/img/fav.png}">
+    <!-- Author Meta -->
+    <meta name="author" content="CodePixar">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>DBShopping</title>
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/css/linearicons.css}"/>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/themify-icons.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/owl.carousel.css}"/>
+    <link rel="stylesheet" th:href="@{/css/nice-select.css}"/>
+    <link rel="stylesheet" th:href="@{/css/nouislider.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.css}"/>
+    <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.skinFlat.css}"/>
+    <link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+
+<body>
+
+<!-- Start Header Area -->
+<admin-header th:include="admin-header :: admin-header" class="bg-white fixed-top"></admin-header>
+<!-- End Header Area -->
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Dashboard</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="/admin">Admin<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="/admin">Dashboard</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+<!--Start dashboard content-->
+<div class="p-4">
+
+    <div class="row d-flex align-items-center justify-content-center">
+        <div class="card m-2 col-md-5 statistics-card">
+            <div class="left-band for-libraries"></div>
+            <div class="statistics-content login_form">
+                <div>
+                    <strong><span th:text="${statistics.libraries}"></span> Libraries</strong>
+                    <p><span th:text="${statistics.pendingRequest}"></span> pending request</p>
+                </div>
+                <div class="form-group">
+                    <a class="primary-btn" href="/admin/libraries">View all</a>
+                </div>
+            </div>
+        </div>
+        <div class="card m-2 col-md-5 statistics-card">
+            <div class="left-band for-clients"></div>
+            <div class="statistics-content login_form">
+                <div>
+                    <strong><span th:text="${statistics.clients}"></span> Clients</strong>
+                    <p><span th:text="${statistics.commands}"></span> commands</p>
+                </div>
+                <div class="form-group">
+                    <a class="primary-btn" href="/admin/clients">View all</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3 d-flex align-items-center justify-content-center">
+        <div class="card m-2 col-md-6">
+            <div class="card-statistic-3 p-4">
+                <div class="card-icon card-icon-large"><i class="fa fa-dollar fa-5x"></i></div>
+                <div class="mb-4">
+                    <h5 class="card-title mb-0">Circulation</h5>
+                </div>
+                <div class="row align-items-center mb-2 d-flex">
+                    <div class="col-8">
+                        <h2 class="d-flex align-items-center mb-0">
+                            $<span th:text="${statistics.circulation}"></span>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card m-2 col-md-4">
+            <div class="card-statistic-3 p-4">
+                <div class="card-icon card-icon-large"><i class="fa fa-shopping-cart fa-5x"></i></div>
+                <div class="mb-4">
+                    <h5 class="card-title mb-0">Orders</h5>
+                </div>
+                <div class="row align-items-center mb-2 d-flex">
+                    <div class="col-8">
+                        <h2 class="d-flex align-items-center mb-0">
+                            <span th:text="${statistics.orders}"></span>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3 d-flex align-items-center justify-content-center">
+        <div class="col-md-10 p-0">
+            <strong class="font-italic">Book categories :</strong>
+        </div>
+    </div>
+    <div class="row d-flex align-items-center justify-content-center">
+        <div class="shadow border mt-2 pt-2 pb-2 row col-md-10 d-flex align-items-center justify-content-center">
+            <div class="m-2 col-md-7">
+                <div class="row p-2 ml-1">
+                    <div th:each="category : ${statistics.categories}" class="card p-1 m-1 col-md-2 d-flex align-items-center justify-content-center">
+                        <span th:text="${category.description}"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="m-2 col-md-3 d-flex align-items-center justify-content-center">
+                    <button class="primary-btn" data-toggle="modal" data-target="#categoryModal">Add category</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End dashboard content-->
+<!--modal-->
+<div class="modal fade" id="categoryModal">
+    <div class="modal-dialog">
+        <div class="modal-content banner-area">
+            <form action="/admin/add-category" class="row d-flex justify-content-between contact_form" method="post" id="contactForm">
+                <div class="container d-flex justify-content-center mt-5 ">
+                    <div class="text-center mb-5 login_form contact_form">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input required type="text" class="form-control" id="category" name="category" placeholder="The new category" onfocus="this.placeholder = ''" onblur="this.placeholder = 'The new category'">
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-group mt-2">
+                            <button type="submit" value="submit" class="primary-btn">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--end modal-->
+
+
+<!-- start footer Area -->
+<div th:include="admin-footer :: admin-footer" class="l-bg-orange-dark pt-3 pb-3 pl-1 pr-1"></div>
+<!-- End footer Area -->
+
+<!--Toast start-->
+<div id="toast-container-success"
+     class="toast-container l-bg-orange-dark"
+     style="display:none; position: fixed; bottom: 20px; left: 20px; z-index: 11; padding: 5px 10px; border-radius: 5px; width: 210px!important; ">
+
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true"></div>
+    <div class="toast-header">
+        <strong>Message</strong>
+        <button type="button" class="ml-1 mb-1 close" data-dismiss="toast" aria-label="Close" onclick="hideAlert()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body">Category has been saved!</div>
+
+</div>
+<div id="toast-container-failed"
+     class="toast-container l-bg-red-dark"
+     style="display:none; position: fixed; bottom: 20px; left: 20px; z-index: 11; padding: 5px 10px; border-radius: 5px; width: 185px!important; ">
+
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+
+    </div>
+    <div class="toast-header">
+        <strong>Message</strong>
+        <button type="button" class="ml-1 mb-1 close" data-dismiss="toast" aria-label="Close" onclick="hideAlert()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body">Something went wrong!</div>
+</div>
+<!--Toast end  -->
+
+<script type="text/javascript" th:src="@{/js/vendor/jquery-2.2.4.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/vendor/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.ajaxchimp.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.nice-select.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.sticky.js}"></script>
+<script type="text/javascript" th:src="@{/js/nouislider.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/countdown.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/owl.carousel.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/functions.js}"></script>
+<script type="text/javascript" th:src="@{/js/main.js}"></script>
+
+</body>
+
+</html>
+

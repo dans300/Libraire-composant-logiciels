@@ -1,0 +1,215 @@
+<html  lang="zxx" class="no-js" style="scroll-behavior: smooth;">
+
+<head>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" th:href="@{/img/fav.png}">
+    <!-- Author Meta -->
+    <meta name="author" content="CodePixar">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>DBShopping</title>
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/css/linearicons.css}"/>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/themify-icons.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/owl.carousel.css}"/>
+    <link rel="stylesheet" th:href="@{/css/nice-select.css}"/>
+    <link rel="stylesheet" th:href="@{/css/nouislider.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.css}"/>
+    <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.skinFlat.css}"/>
+    <link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+
+</head>
+
+<body>
+
+<!-- Start Header Area -->
+<admin-header th:include="admin-header :: admin-header" class="bg-white fixed-top"></admin-header>
+<!-- End Header Area -->
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Libraries</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="/admin">Dashboard<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="/admin/libraries">Libraries</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+<!--================Ordered products Area =================-->
+<div th:if="${#lists.isEmpty(sellersSellsRating)}" th:include="empty-card :: empty-card" class="row justify-content-center border shadow m-4 p-5"></div>
+
+<div th:if="${!#lists.isEmpty(sellersSellsRating)}" class="p-4">
+    <div th:each="sellerSellsRating : ${sellersSellsRating}" th:class="${sellerSellsRating.library.accepted} ? 'row library l-bg-orange' : 'row library l-bg-orange-dark'">
+        <div class="col-md-3">
+            <strong th:text="${sellerSellsRating.library.name}"></strong>
+        </div>
+        <div class="col-md-3">
+            <p>Email: <span th:text="${sellerSellsRating.library.email}"></span></p>
+            <p>Address: <span th:text="${sellerSellsRating.library.address}"></span></p>
+        </div>
+
+        <div th:if="${sellerSellsRating.library.accepted}" class="actions">
+            <div class="feedback">
+                <strong><span th:text="${sellerSellsRating.sells}"></span> sells</strong>
+            </div>
+            <div class="feedback mt-2">
+                <ul class="list">
+                    <li>
+                        <a class="active"><span>Rating</span> :
+                            <i th:if="${sellerSellsRating.rating >= 1}" th:each="starNumber : ${#numbers.sequence(1, sellerSellsRating.rating)}" class="fa fa-star"></i><i th:if="${sellerSellsRating.rating % 1 != 0}" class="fa fa-star-half-full"></i><i th:if="${5 - sellerSellsRating.rating>=1 && sellerSellsRating.rating % 1 <= 0.5}" th:each="starNumber : ${#numbers.sequence(1, 5 - sellerSellsRating.rating - sellerSellsRating.rating % 1 )}" class="fa fa-star-o"></i><i th:if="${6 - sellerSellsRating.rating - sellerSellsRating.rating % 1 > 1 && sellerSellsRating.rating % 1 > 0.5}" th:each="starNumber : ${#numbers.sequence(1, 6 - sellerSellsRating.rating - sellerSellsRating.rating % 1 )}" class="fa fa-star-o"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div th:unless="${sellerSellsRating.library.accepted}" class="actions">
+            <div class="accept feedback" th:data-library-name="${sellerSellsRating.library.name}" th:data-library-id="${sellerSellsRating.library.id}">
+                <strong data-toggle="modal" data-target="#acceptModal">Accept</strong>
+            </div>
+            <div class="decline feedback mt-2" th:data-library-name="${sellerSellsRating.library.name}" th:data-library-id="${sellerSellsRating.library.id}">
+                <strong data-toggle="modal" data-target="#declineModal">Decline</strong>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--================End Ordered products Area =================-->
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="declineModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="container d-flex justify-content-center mt-5 ">
+                <div class="text-center mb-5 login_form">
+                    <span class="name mb-1 fw-500"><span id="libraryNamePlaceholderDecline"></span></span>
+                    <br/>
+                    <small class="text-black-50">Do you confirm declining this registration ?</small>
+                    <div class="col-md-12 form-group mt-2">
+                        <a id="declineLink" href="" class="primary-btn">Decline</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="acceptModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="container d-flex justify-content-center mt-5 ">
+                <div class="text-center mb-5 login_form">
+                    <span class="name mb-1 fw-500"><span id="libraryNamePlaceholderAccept"></span></span>
+                    <br/>
+                    <small class="text-black-50">Do you confirm accepting this registration ?</small>
+                    <div class="col-md-12 form-group mt-2">
+                        <a id="acceptLink" href="" class="primary-btn">Accept</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- start footer Area -->
+<div th:include="admin-footer :: admin-footer" class="l-bg-orange-dark pt-3 pb-3 pl-1 pr-1"></div>
+<!-- End footer Area -->
+
+<!--Toast start-->
+<div id="toast-container-success"
+     class="toast-container l-bg-orange-dark"
+     style="display:none; position: fixed; bottom: 20px; left: 20px; z-index: 11; padding: 5px 10px; border-radius: 5px; width: 220px!important; ">
+
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true"></div>
+    <div class="toast-header">
+        <strong>Message</strong>
+        <button type="button" class="ml-1 mb-1 close" data-dismiss="toast" aria-label="Close" onclick="hideAlert()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body">Library has been accepted!</div>
+</div>
+<div id="toast-container-success-decline"
+     class="toast-container l-bg-orange-dark"
+     style="display:none; position: fixed; bottom: 20px; left: 20px; z-index: 11; padding: 5px 10px; border-radius: 5px; width: 220px!important; ">
+
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true"></div>
+    <div class="toast-header">
+        <strong>Message</strong>
+        <button type="button" class="ml-1 mb-1 close" data-dismiss="toast" aria-label="Close" onclick="hideAlert()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body">Library has been declined!</div>
+</div>
+<div id="toast-container-failed"
+     class="toast-container l-bg-red-dark"
+     style="display:none; position: fixed; bottom: 20px; left: 20px; z-index: 11; padding: 5px 10px; border-radius: 5px; width: 185px!important; ">
+
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+
+    </div>
+    <div class="toast-header">
+        <strong>Message</strong>
+        <button type="button" class="ml-1 mb-1 close" data-dismiss="toast" aria-label="Close" onclick="hideAlert()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body">Something went wrong!</div>
+</div>
+<!--Toast end  -->
+
+<script type="text/javascript" th:src="@{/js/vendor/jquery-2.2.4.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/vendor/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.ajaxchimp.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.nice-select.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.sticky.js}"></script>
+<script type="text/javascript" th:src="@{/js/nouislider.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/countdown.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/owl.carousel.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/functions.js}"></script>
+<script type="text/javascript" th:src="@{/js/main.js}"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.accept.feedback').on('click', function () {
+            const libraryName = $(this).data('library-name');
+            const libraryId = $(this).data('library-id');
+
+            $('#libraryNamePlaceholderAccept').text(libraryName);
+
+            $('#acceptLink').attr('href', '/admin/accept-library?library-id=' + libraryId);
+        });
+
+        $('.decline.feedback').on('click', function () {
+            const libraryName = $(this).data('library-name');
+            const libraryId = $(this).data('library-id');
+
+            $('#libraryNamePlaceholderDecline').text(libraryName);
+
+            $('#declineLink').attr('href', '/admin/decline-library?library-id=' + libraryId);
+        });
+
+    });
+</script>
+
+</body>
+</html>

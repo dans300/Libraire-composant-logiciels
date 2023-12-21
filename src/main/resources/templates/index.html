@@ -1,0 +1,168 @@
+<html  lang="zxx" class="no-js" style="scroll-behavior: smooth;">
+
+<head>
+	<!-- Mobile Specific Meta -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Favicon-->
+	<link rel="shortcut icon" th:href="@{/img/fav.png}">
+	<!-- Author Meta -->
+	<meta name="author" content="CodePixar">
+	<!-- Meta Description -->
+	<meta name="description" content="">
+	<!-- Meta Keyword -->
+	<meta name="keywords" content="">
+	<!-- meta character set -->
+	<meta charset="UTF-8">
+	<!-- Site Title -->
+	<title>DBShopping</title>
+	<title>DBShopping</title>
+	<!-- CSS -->
+	<link rel="stylesheet" th:href="@{/css/linearicons.css}"/>
+	<link rel="stylesheet" th:href="@{/css/font-awesome.min.css}"/>
+	<link rel="stylesheet" th:href="@{/css/themify-icons.css}"/>
+	<link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+	<link rel="stylesheet" th:href="@{/css/owl.carousel.css}"/>
+	<link rel="stylesheet" th:href="@{/css/nice-select.css}"/>
+	<link rel="stylesheet" th:href="@{/css/nouislider.min.css}"/>
+	<link rel="stylesheet" th:href="@{/css/ion.rangeSlider.css}"/>
+	<link rel="stylesheet" th:href="@{/css/ion.rangeSlider.skinFlat.css}"/>
+	<link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
+	<link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+
+<body>
+
+	<!-- Start Header Area -->
+	<header th:include="header :: header(authenticated=${authenticated})" class="header_area sticky-header"></header>
+	<!-- End Header Area -->
+
+	<!-- start banner Area -->
+	<section class="banner-area">
+		<div class="container">
+			<div class="row fullscreen align-items-center justify-content-start">
+				<div class="col-lg-12">
+						<!-- single-slide -->
+						<div class="row single-slide align-items-center d-flex">
+							<div class="col-lg-5 col-md-6">
+								<div class="banner-content">
+									<h1>New<br>Collection!</h1>
+									<p>
+										A little learning, indeed, may be a dangerous thing, but the want of learning is a calamity to any people.
+									</p>
+									<div class="pt-4">
+										<a class="primary-btn circle-btn" href="#products" onclick="setActiveNavItem('productsLink')">Let's discover it!</a>
+									</div>
+
+								</div>
+							</div>
+							<div class="col-lg-7">
+								<div class="banner-img">
+									<img class="img-fluid" th:src="@{img/banner/banner-img.png}" alt="">
+								</div>
+							</div>
+						</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End banner Area -->
+
+	<!-- start features Area -->
+	<section class="features-area section_gap">
+		<div class="container">
+			<div class="row features-inner">
+				<!-- single features -->
+				<div class="col-lg-3 col-md-6 col-sm-6">
+					<div class="single-features">
+						<div class="f-icon">
+							<img th:src="@{img/features/f-icon1.png}" alt="">
+						</div>
+						<h6>Delivery</h6>
+						<p>Fast Shipping on all order</p>
+					</div>
+				</div>
+				<!-- single features -->
+				<div class="col-lg-3 col-md-6 col-sm-6">
+					<div class="single-features">
+						<div class="f-icon">
+							<img th:src="@{img/features/f-icon2.png}" alt="">
+						</div>
+						<h6>Return Policy</h6>
+						<p>Free Return on all order</p>
+					</div>
+				</div>
+				<!-- single features -->
+				<div class="col-lg-3 col-md-6 col-sm-6">
+					<div class="single-features">
+						<div class="f-icon">
+							<img th:src="@{img/features/f-icon3.png}" alt="">
+						</div>
+						<h6>24/7 Support</h6>
+						<p>Support available at any time</p>
+					</div>
+				</div>
+				<!-- single features -->
+				<div class="col-lg-3 col-md-6 col-sm-6">
+					<div class="single-features">
+						<div class="f-icon">
+							<img th:src="@{img/features/f-icon4.png}" alt="">
+						</div>
+						<h6>Secure Payment</h6>
+						<p>Secure Payment on all order</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- end features Area -->
+
+	<!-- start product Area -->
+
+	<div th:if="${#lists.isEmpty(books)}" th:include="empty-card :: empty-card" id="products" class="row justify-content-center border shadow m-4 p-5"></div>
+
+	<div th:if="${!#lists.isEmpty(books)}" id="products" class="pt-5">
+
+		<section>
+		<!-- section if len(results>8) class="owl-carousel active-product-area section_gap" -->
+
+			<!-- single product slide -->
+			<div class="single-product-slider">
+				<div class="container">
+<!--					<div class="row justify-content-center">-->
+<!--						<div class="col-lg-6 text-center">-->
+<!--							<div class="section-title">-->
+<!--								<h1>Products Slide 1</h1>-->
+<!--								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--					</div>-->
+					<div class="row">
+						<!-- single product -->
+						<div th:each="book : ${books}" th:include="product :: product(book=${book})" class="col-lg-3 col-md-6"></div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+	<!-- end product Area -->
+
+	<!-- start footer Area -->
+	<div th:include="footer :: footer" class="footer-area section_gap" id="about-us"></div>
+	<!-- End footer Area -->
+
+	<script type="text/javascript" th:src="@{/js/vendor/jquery-2.2.4.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/vendor/bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/jquery.ajaxchimp.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/jquery.nice-select.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/jquery.sticky.js}"></script>
+	<script type="text/javascript" th:src="@{/js/nouislider.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/countdown.js}"></script>
+	<script type="text/javascript" th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/owl.carousel.min.js}"></script>
+
+	<script type="text/javascript" th:src="@{/js/main.js}"></script>
+	<script type="text/javascript" th:src="@{/js/functions.js}"></script>
+
+</body>
+
+</html>

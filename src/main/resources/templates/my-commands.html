@@ -1,0 +1,187 @@
+<html  lang="zxx" class="no-js" style="scroll-behavior: smooth;">
+
+<head>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" th:href="@{/img/fav.png}">
+    <!-- Author Meta -->
+    <meta name="author" content="CodePixar">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>DBShopping</title>
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/css/linearicons.css}"/>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/themify-icons.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/owl.carousel.css}"/>
+    <link rel="stylesheet" th:href="@{/css/nice-select.css}"/>
+    <link rel="stylesheet" th:href="@{/css/nouislider.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.css}"/>
+    <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.skinFlat.css}"/>
+    <link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+
+<body>
+
+<!-- Start Header Area -->
+<header th:include="header :: header" class="header_area sticky-header"></header>
+<!-- End Header Area -->
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>My commands</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="/">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="/commands">Commands</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+<!--================Ordered products Area =================-->
+<div th:if="${#lists.isEmpty(commands)}" th:include="empty-card :: empty-card" class="row justify-content-center border shadow m-4 p-5"></div>
+
+<div th:if="${!#lists.isEmpty(commands)}" class="orders p-4">
+    <!--command-->
+    <div  th:each="command : ${commands}" class="row col-md-12 m-2 mb-4 p-3 shadow border d-flex justify-content-center ">
+        <div class="row mb-1 col-md-12 d-flex justify-content-center align-items-center">
+            <div class="col" style="background-color: black; height: 3px"></div>
+            <div class="d-flex justify-content-center" style="width: 300px">
+                <strong class="font-italic">Command of the <span th:text="${command.date}"></span></strong>
+            </div>
+            <div class="col" style="background-color: black; height: 3px"></div>
+        </div>
+
+        <div th:each="order : ${command.orderedBooks}" class="col-md-12 row ordered-product banner-area">
+            <div class="col-md-4">
+                <strong th:text="${order.book.title}"></strong>
+                <p>
+                    Price      $<span th:text="${order.book.price}"></span>
+                    / Delivery $<span th:text="${order.book.deliveryCost}"></span>
+                </p>
+            </div>
+            <div th:if="${order.state==T(com.project.ecommerce.enums.OrderState).PENDING}" class="col-md-1">
+                <span class="order-state pending">pending...</span>
+            </div>
+            <div th:if="${order.state==T(com.project.ecommerce.enums.OrderState).DELIVERED}" class="col-md-1">
+                <span class="order-state delivered mb-2">delivered</span>
+            </div>
+            <div th:if="${order.state==T(com.project.ecommerce.enums.OrderState).CANCELED}" class="col-md-4">
+                <span class="order-state canceled">canceled</span>
+                <p th:if="${order.reason!=null}" class="reason">
+                    <span th:text="${order.reason}"></span>
+                </p>
+            </div>
+            <div th:if="${order.state==T(com.project.ecommerce.enums.OrderState).DELIVERED && order.rating==null}" class="col-md-2 feedback">
+                <strong data-toggle="modal" th:data-target="${'#reviewModal'+order.id}">Give a feedback</strong>
+            </div>
+            <div th:if="${order.state==T(com.project.ecommerce.enums.OrderState).DELIVERED && order.rating!=null}" class="col-md-2 feedback">
+                <ul class="list">
+                    <li>
+                        <a class="active"><span>Rating</span> :
+                            <i th:if="${order.rating >= 1}" th:each="starNumber : ${#numbers.sequence(1, order.rating)}" class="fa fa-star"></i><i th:if="${order.rating % 1 != 0}" class="fa fa-star-half-full"></i><i th:if="${5 - order.rating>=1 && order.rating % 1 <= 0.5}" th:each="starNumber : ${#numbers.sequence(1, 5 - order.rating - order.rating % 1 )}" class="fa fa-star-o"></i><i th:if="${6 - order.rating - order.rating % 1 > 1 && order.rating % 1 > 0.5}" th:each="starNumber : ${#numbers.sequence(1, 6 - order.rating - order.rating % 1 )}" class="fa fa-star-o"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Bootstrap Modal -->
+            <div th:if="${order.state==T(com.project.ecommerce.enums.OrderState).DELIVERED && order.rating==null}" class="modal fade" th:id="${'reviewModal'+order.id}">
+                <div class="modal-dialog">
+                    <div class="modal-content banner-area">
+                        <div class="container d-flex justify-content-center mt-5 ">
+
+                            <div class="text-center mb-2">
+
+                                <span class="name mb-1 fw-500" th:text="${order.book.library.name}"></span>
+                                <br/>
+                                <small class="text-black-50" th:text="${order.book.title}"></small>
+
+                                <div class="rate  py-3 text-white mt-3 login_form">
+                                    <form method="post" th:action="${'/client/submit-review?order-id='+order.id}">
+                                        <h6 class="mb-1">Rate the book</h6>
+
+                                        <div class="rating">
+                                            <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
+                                            <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
+                                            <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
+                                            <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
+                                            <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
+                                            <input type="radio" name="rating" value="0" id="0" checked><label for="0" hidden>☆</label>
+                                        </div>
+
+                                        <div class="mt-4 form-group">
+                                            <button type="submit" value="submit" class="primary-btn">Submit</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--================End Ordered products Area =================-->
+
+<!-- start footer Area -->
+<div th:include="footer :: footer" class="footer-area section_gap" id="about-us"></div>
+<!-- End footer Area -->
+
+<!--Toast start-->
+<div id="toast-container-success"
+     class="toast-container l-bg-orange-dark"
+     style="display:none; position: fixed; bottom: 20px; left: 20px; z-index: 11; padding: 5px 10px; border-radius: 5px; width: 220px!important; ">
+
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true"></div>
+    <div class="toast-header">
+        <strong>Message</strong>
+        <button type="button" class="ml-1 mb-1 close" data-dismiss="toast" aria-label="Close" onclick="hideAlert()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body">Book has been rated!</div>
+</div>
+<div id="toast-container-failed"
+     class="toast-container l-bg-red-dark"
+     style="display:none; position: fixed; bottom: 20px; left: 20px; z-index: 11; padding: 5px 10px; border-radius: 5px; width: 185px!important; ">
+
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+
+    </div>
+    <div class="toast-header">
+        <strong>Message</strong>
+        <button type="button" class="ml-1 mb-1 close" data-dismiss="toast" aria-label="Close" onclick="hideAlert()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body">Something went wrong!</div>
+</div>
+<!--Toast end  -->
+
+<script type="text/javascript" th:src="@{/js/vendor/jquery-2.2.4.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/vendor/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.ajaxchimp.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.nice-select.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.sticky.js}"></script>
+<script type="text/javascript" th:src="@{/js/nouislider.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/countdown.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/owl.carousel.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/functions.js}"></script>
+<script type="text/javascript" th:src="@{/js/main.js}"></script>
+</body>
+</html>

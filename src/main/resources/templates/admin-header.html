@@ -1,0 +1,27 @@
+<admin-header class="bg-white fixed-top">
+  <nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <a class="navbar-brand" href="/admin">
+      <!-- Your brand/logo image or text goes here -->
+      <img th:src="@{/img/logo.png}" alt="Logo" width="110" height="35" class="d-inline-block align-top">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/admin">Dashboard<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/libraries">Libraries</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/clients">Clients</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/login">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</admin-header>

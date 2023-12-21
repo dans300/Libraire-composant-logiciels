@@ -1,0 +1,237 @@
+<html  lang="zxx" class="no-js" style="scroll-behavior: smooth;">
+
+<head>
+  <!-- Mobile Specific Meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Favicon-->
+  <link rel="shortcut icon" th:href="@{/img/fav.png}">
+  <!-- Author Meta -->
+  <meta name="author" content="CodePixar">
+  <!-- Meta Description -->
+  <meta name="description" content="">
+  <!-- Meta Keyword -->
+  <meta name="keywords" content="">
+  <!-- meta character set -->
+  <meta charset="UTF-8">
+  <!-- Site Title -->
+  <title>DBShopping</title>
+  <!-- CSS -->
+  <link rel="stylesheet" th:href="@{/css/linearicons.css}"/>
+  <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}"/>
+  <link rel="stylesheet" th:href="@{/css/themify-icons.css}"/>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+  <link rel="stylesheet" th:href="@{/css/owl.carousel.css}"/>
+  <link rel="stylesheet" th:href="@{/css/nice-select.css}"/>
+  <link rel="stylesheet" th:href="@{/css/nouislider.min.css}"/>
+  <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.css}"/>
+  <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.skinFlat.css}"/>
+  <link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+
+<body>
+
+<!-- Start Header Area -->
+<library-header th:include="library-header :: library-header" class="bg-white fixed-top"></library-header>
+<!-- End Header Area   -->
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+  <div class="container">
+    <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+      <div class="col-first">
+        <h1>Books</h1>
+        <nav class="d-flex align-items-center">
+          <a href="/library">Library<span class="lnr lnr-arrow-right"></span></a>
+          <a href="/library/books">Books</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Banner Area -->
+
+
+<!--Content    -->
+<div th:if="${#lists.isEmpty(booksSellsRating)}" th:include="empty-card :: empty-card" class="row justify-content-center border shadow m-4 p-5"></div>
+<div th:if="${! #lists.isEmpty(booksSellsRating)}" class="p-4">
+  <div th:each="bookSellsRating : ${booksSellsRating}" class="row book banner-area">
+    <div class="col-md-3">
+      <p><span th:text="${bookSellsRating.book.title}"></span></p>
+      <p>Price $<span th:text="${bookSellsRating.book.price}"></span></p>
+      <p>Shipping for $<span th:text="${bookSellsRating.book.deliveryCost}"></span></p>
+    </div>
+    <div class="col-md-3">
+      <p>Categories:
+        <span th:each="category, iterStat : ${bookSellsRating.book.categories}" th:text="${category.description + (iterStat.last ? '.' : ', ')}"></span>
+      </p>
+      <p>Authors:
+        <span th:each="author, iterStat : ${bookSellsRating.book.authors}" th:text="${author.fullName + (iterStat.last ? '.' : ', ')}"></span>
+      </p>
+      <p>State: <span th:text="${bookSellsRating.book.state}"></span></p>
+    </div>
+    <div class="actions">
+      <div class="feedback border">
+        <strong><span th:text="${bookSellsRating.sells}"></span> sells</strong>
+      </div>
+      <div class="feedback border mt-2">
+        <ul class="list">
+          <li>
+            <a class="active"><span>Rating</span>:
+              <i th:if="${bookSellsRating.rating >= 1}" th:each="starNumber : ${#numbers.sequence(1, bookSellsRating.rating)}" class="fa fa-star"></i><i th:if="${bookSellsRating.rating % 1 != 0}" class="fa fa-star-half-full"></i><i th:if="${5 - bookSellsRating.rating>=1 && bookSellsRating.rating % 1 <= 0.5}" th:each="starNumber : ${#numbers.sequence(1, 5 - bookSellsRating.rating - bookSellsRating.rating % 1 )}" class="fa fa-star-o"></i><i th:if="${6 - bookSellsRating.rating - bookSellsRating.rating % 1 > 1 && bookSellsRating.rating % 1 > 0.5}" th:each="starNumber : ${#numbers.sequence(1, 6 - bookSellsRating.rating - bookSellsRating.rating % 1 )}" class="fa fa-star-o"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<!--  floating action button-->
+<div style="position: fixed; bottom: 16px; right: 16px;">
+  <div class="single-product mb-0">
+    <div class="product-details">
+      <div class="prd-bottom">
+        <a class="social-info" data-toggle="modal" data-target="#book-form">
+          <span class="ti-plus"></span>
+          <p class="hover-text" style="color: darkorange!important;">add a book</p>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End content-->
+
+<!--	pop-up starts -->
+<div class="modal fade" id="book-form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="pt-3 pr-4 pl-4 pb-0 section-top-border">
+        <h4 class="font-italic mb-3">New Book</h4>
+        <form action="/library/add-book" method="post" class="row d-flex justify-content-between contact_form" id="contactForm">
+          <div class="col-md-12">
+            <div class="form-group">
+              <input type="text" class="form-control" id="title" name="title" placeholder="The book name" required>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <input type="text" class="form-control" id="editor" name="editor" placeholder="Editor" required>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <input type="number" class="form-control" id="pages" name="pages" min=0 placeholder="Number of pages" required>
+            </div>
+          </div>
+          <div class="col-md-3 mb-2">
+            <div class="form-select p-0" id="default-select-state">
+              <select name="state" class="border" id="state" required>
+                <option value=" 1">State</option>
+                <option selected value="NEW">New</option>
+                <option value="VERY_GOOD">VERY GOOD</option>
+                <option value="GOOD">GOOD</option>
+                <option value="MEDIUM">MEDIUM</option>
+                <option value="BAD">BAD</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <input type="text" class="form-control" id="authors" name="authors" placeholder="Authors separated by ',' example : Driss,Said " required>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="col-md-12 row">
+              <span class="ml-1">Available categories</span>
+            </div>
+            <div class="col-md-12 row mb-2">
+              <!-- Iterate over the list of categories -->
+              <div th:each="category : ${categories}" class="border col-md-2 p-2 m-1">
+                <div class="switch-wrap d-flex justify-content-between align-items-center">
+                  <!-- Display the category name -->
+                  <p th:text="${category.description}" class="m-0"></p>
+                  <div class="confirm-checkbox border">
+                    <!-- Generate a checkbox with a unique ID based on the category ID -->
+                    <input name="categories" th:value="${category.id}" type="checkbox" th:id="'confirm-checkbox-' + ${category.id}">
+                    <label th:for="'confirm-checkbox-' + ${category.id}"></label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <input type="text" class="form-control" id="book-cost" name="price" placeholder="Book price $" required>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <input type="text" class="form-control" id="delivery-cost" name="deliveryCost"  placeholder="Shipping cost $" required>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <textarea class="form-control" name="description" id="description" rows="1" placeholder="Description" required></textarea>
+            </div>
+          </div>
+          <div class="col-md-12 text-right">
+            <button type="submit" value="submit" class="btn primary-btn mb-0">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!--	pop-up ends   -->
+
+<!-- Start Footer Area-->
+<div th:include="footer :: footer" class="footer-area section_gap"></div>
+<!-- End Footer Area  -->
+
+<!--Toast start-->
+<div id="toast-container-success"
+     class="toast-container l-bg-orange-dark"
+     style="display:none; position: fixed; bottom: 20px; left: 20px; z-index: 11; padding: 5px 10px; border-radius: 5px; width: 185px!important; ">
+
+  <div class="toast" role="alert" aria-live="assertive" aria-atomic="true"></div>
+  <div class="toast-header">
+    <strong>Message</strong>
+    <button type="button" class="ml-1 mb-1 close" data-dismiss="toast" aria-label="Close" onclick="hideAlerts()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="toast-body">Book has been saved!</div>
+
+</div>
+
+<div id="toast-container-failed"
+     class="toast-container l-bg-red-dark"
+     style="display:none; position: fixed; bottom: 20px; left: 20px; z-index: 11; padding: 5px 10px; border-radius: 5px; width: 185px!important; ">
+
+  <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+
+  </div>
+  <div class="toast-header">
+    <strong>Message</strong>
+    <button type="button" class="ml-1 mb-1 close" data-dismiss="toast" aria-label="Close" onclick="hideAlerts()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="toast-body">Something went wrong!</div>
+</div>
+<!--Toast end  -->
+
+<script type="text/javascript" th:src="@{/js/vendor/jquery-2.2.4.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/vendor/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.ajaxchimp.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.nice-select.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.sticky.js}"></script>
+<script type="text/javascript" th:src="@{/js/nouislider.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/countdown.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/owl.carousel.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/functions.js}"></script>
+<script type="text/javascript" th:src="@{/js/main.js}"></script>
+
+</body>
+</html>

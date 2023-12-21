@@ -1,0 +1,173 @@
+<html  lang="zxx" class="no-js" style="scroll-behavior: smooth;">
+
+<head>
+  <!-- Mobile Specific Meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Favicon-->
+  <link rel="shortcut icon" th:href="@{/img/fav.png}">
+  <!-- Author Meta -->
+  <meta name="author" content="CodePixar">
+  <!-- Meta Description -->
+  <meta name="description" content="">
+  <!-- Meta Keyword -->
+  <meta name="keywords" content="">
+  <!-- meta character set -->
+  <meta charset="UTF-8">
+  <!-- Site Title -->
+  <title>DBShopping</title>
+  <!-- CSS -->
+  <link rel="stylesheet" th:href="@{/css/linearicons.css}"/>
+  <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}"/>
+  <link rel="stylesheet" th:href="@{/css/themify-icons.css}"/>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+  <link rel="stylesheet" th:href="@{/css/owl.carousel.css}"/>
+  <link rel="stylesheet" th:href="@{/css/nice-select.css}"/>
+  <link rel="stylesheet" th:href="@{/css/nouislider.min.css}"/>
+  <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.css}"/>
+  <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.skinFlat.css}"/>
+  <link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+
+<body>
+
+<!-- Start Header Area -->
+<library-header th:include="library-header :: library-header" class="bg-white fixed-top"></library-header>
+<!-- End Header Area   -->
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+  <div class="container">
+    <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+      <div class="col-first">
+        <h1>Dashboard</h1>
+        <nav class="d-flex align-items-center">
+          <a href="/library">Library<span class="lnr lnr-arrow-right"></span></a>
+          <a href="/library">Dashboard</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Banner Area -->
+
+<!--Content    -->
+<div class="p-4">
+  <div class="row d-flex align-items-center justify-content-center">
+    <div class="card m-2 col-md-5 statistics-card">
+      <div class="left-band l-bg-orange-dark"></div>
+      <div class="statistics-content login_form">
+        <div>
+          <strong><span th:text="${statistics.orderedBooks}"></span> Ordered book</strong>
+          <p><span th:text="${statistics.pendingOrders}"></span> pending request</p>
+        </div>
+        <div class="form-group">
+          <a class="primary-btn" href="/library/commands">View all</a>
+        </div>
+      </div>
+    </div>
+    <div class="card m-2 col-md-5 statistics-card">
+      <div class="left-band l-bg-orange-dark"></div>
+      <div class="statistics-content login_form">
+        <div>
+          <strong><span th:text="${statistics.books}"></span> Book</strong>
+          <p><span th:text="${statistics.categories}"></span> categories</p>
+        </div>
+        <div class="form-group">
+          <a class="primary-btn" href="/library/books">View all</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3 d-flex align-items-center justify-content-center">
+    <div class="card m-2 col-md-6">
+      <div class="card-statistic-3 p-4">
+        <div class="card-icon card-icon-large"><i class="fa fa-dollar fa-5x"></i></div>
+        <div class="mb-4">
+          <h5 class="card-title mb-0">Revenue</h5>
+        </div>
+        <div class="row align-items-center mb-2 d-flex">
+          <div class="col-8">
+            <h2 class="d-flex align-items-center mb-0">
+              $<span th:text="${statistics.revenue}"></span>
+            </h2>
+          </div>
+          <div class="col-4 text-right">
+            <span>Top <span th:text="${statistics.revenuePosition}"></span>%</span>
+          </div>
+        </div>
+        <div class="progress mt-1 " data-height="8" style="height: 8px;">
+          <div class="progress-bar l-bg-cyan" role="progressbar" th:data-width="${statistics.revenuePosition +'%'}" th:aria-valuenow="${statistics.revenuePosition}" aria-valuemin="0" aria-valuemax="100" th:style="${'width:'+statistics.revenuePosition+'%;'}"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card m-2 col-md-4">
+      <div class="card-statistic-3 p-4">
+        <div class="card-icon card-icon-large"><i class="fa fa-shopping-cart fa-5x"></i></div>
+        <div class="mb-4">
+          <h5 class="card-title mb-0">Delivered</h5>
+        </div>
+        <div class="row align-items-center mb-2 d-flex">
+          <div class="col-8">
+            <h2 class="d-flex align-items-center mb-0">
+              <span th:text="${statistics.sells}"></span>
+            </h2>
+          </div>
+          <div class="col-4 text-right">
+            <span>Top <span th:text="${statistics.shippingPosition}"></span>%</span>
+          </div>
+        </div>
+        <div class="progress mt-1 " data-height="8" style="height: 8px;">
+          <div class="progress-bar l-bg-cyan" role="progressbar" th:data-width="${statistics.shippingPosition +'%'}" th:aria-valuenow="${statistics.shippingPosition}" aria-valuemin="0" aria-valuemax="100" th:style="${'width:'+statistics.shippingPosition+'%;'}"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3 d-flex align-items-center justify-content-center">
+    <div class="card m-2 col-md-10">
+      <div class="card-statistic-3 p-4">
+        <div class="card-icon card-icon-large"><i class="fa fa-star fa-5x"></i></div>
+        <div class="mb-4">
+          <h5 class="card-title mb-0">Average rating</h5>
+        </div>
+        <div class="row align-items-center mb-2 d-flex">
+          <div class="col-8">
+            <h2 class="d-flex align-items-center mb-0">
+              <div class="media">
+                <div class="media-body">
+                  <!-- Whole stars (if rating is greater than 0) th:if="${statistics.rating > 0}"-->
+                  <i th:if="${statistics.rating >= 1}" th:each="starNumber : ${#numbers.sequence(1, statistics.rating)}" class="fa fa-star"></i><i th:if="${statistics.rating % 1 != 0}" class="fa fa-star-half-full"></i><i th:if="${5 - statistics.rating>=1 && statistics.rating % 1 <= 0.5}" th:each="starNumber : ${#numbers.sequence(1, 5 - statistics.rating - statistics.rating % 1 )}" class="fa fa-star-o"></i><i th:if="${6 - statistics.rating - statistics.rating % 1 > 1 && statistics.rating % 1 > 0.5}" th:each="starNumber : ${#numbers.sequence(1, 6 - statistics.rating - statistics.rating % 1 )}" class="fa fa-star-o"></i>
+                </div>
+              </div>
+            </h2>
+          </div>
+          <div class="col-4 text-right">
+            <span class="font-italic">
+              <span th:text="${statistics.rating}"></span> stars by
+              <span th:text="${statistics.votes}"></span>
+              review</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End content-->
+
+<!-- Start Footer Area-->
+<div th:include="footer :: footer" class="footer-area section_gap" id="about-us"></div>
+<!-- End Footer Area  -->
+
+<script type="text/javascript" th:src="@{/js/vendor/jquery-2.2.4.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/vendor/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.ajaxchimp.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.nice-select.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.sticky.js}"></script>
+<script type="text/javascript" th:src="@{/js/nouislider.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/countdown.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/owl.carousel.min.js}"></script>
+
+<script type="text/javascript" th:src="@{/js/main.js}"></script>
+</body>
+</html>

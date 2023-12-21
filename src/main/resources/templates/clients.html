@@ -1,0 +1,94 @@
+<html  lang="zxx" class="no-js" style="scroll-behavior: smooth;">
+
+<head>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" th:href="@{/img/fav.png}">
+    <!-- Author Meta -->
+    <meta name="author" content="CodePixar">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>DBShopping</title>
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/css/linearicons.css}"/>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/themify-icons.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/owl.carousel.css}"/>
+    <link rel="stylesheet" th:href="@{/css/nice-select.css}"/>
+    <link rel="stylesheet" th:href="@{/css/nouislider.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.css}"/>
+    <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.skinFlat.css}"/>
+    <link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+
+</head>
+
+<body>
+
+<!-- Start Header Area -->
+<admin-header th:include="admin-header :: admin-header" class="bg-white fixed-top"></admin-header>
+<!-- End Header Area -->
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Clients</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="/admin">Dashboard<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="/admin/libraries">Clients</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+<!--================Ordered products Area =================-->
+
+<div th:if="${#lists.isEmpty(clients)}" th:include="empty-card :: empty-card" class="row justify-content-center border shadow m-4 p-5"></div>
+
+<div th:if="${!#lists.isEmpty(clients)}" class="p-4">
+    <div th:each="client: ${clients}" class="row clients banner-area">
+        <div class="col-md-3">
+            <strong th:text="${client.fullName}"></strong>
+        </div>
+        <div class="col-md-3">
+            <p>Email: <span th:text="${client.email}"></span></p>
+            <p>Address: <span th:text="${client.address}"></span></p>
+        </div>
+        <div class="feedback">
+            <strong><span th:text="${client.purchases}"></span> purchases</strong>
+        </div>
+    </div>
+</div>
+<!--================End Ordered products Area =================-->
+
+
+<!-- start footer Area -->
+<div th:include="admin-footer :: admin-footer" class="l-bg-orange-dark pt-3 pb-3 pl-1 pr-1"></div>
+<!-- End footer Area -->
+
+<script type="text/javascript" th:src="@{/js/vendor/jquery-2.2.4.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/vendor/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.ajaxchimp.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.nice-select.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.sticky.js}"></script>
+<script type="text/javascript" th:src="@{/js/nouislider.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/countdown.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/owl.carousel.min.js}"></script>
+
+<script type="text/javascript" th:src="@{/js/main.js}"></script>
+
+
+</body>
+</html>

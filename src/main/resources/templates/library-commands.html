@@ -1,0 +1,221 @@
+<html  lang="zxx" class="no-js" style="scroll-behavior: smooth;">
+
+<head>
+  <!-- Mobile Specific Meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Favicon-->
+  <link rel="shortcut icon" th:href="@{/img/fav.png}">
+  <!-- Author Meta -->
+  <meta name="author" content="CodePixar">
+  <!-- Meta Description -->
+  <meta name="description" content="">
+  <!-- Meta Keyword -->
+  <meta name="keywords" content="">
+  <!-- meta character set -->
+  <meta charset="UTF-8">
+  <!-- Site Title -->
+  <title>DBShopping</title>
+  <!-- CSS -->
+  <link rel="stylesheet" th:href="@{/css/linearicons.css}"/>
+  <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}"/>
+  <link rel="stylesheet" th:href="@{/css/themify-icons.css}"/>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+  <link rel="stylesheet" th:href="@{/css/owl.carousel.css}"/>
+  <link rel="stylesheet" th:href="@{/css/nice-select.css}"/>
+  <link rel="stylesheet" th:href="@{/css/nouislider.min.css}"/>
+  <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.css}"/>
+  <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.skinFlat.css}"/>
+  <link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+
+<body>
+
+<!-- Start Header Area -->
+<library-header th:include="library-header :: library-header" class="bg-white fixed-top"></library-header>
+<!-- End Header Area   -->
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+  <div class="container">
+    <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+      <div class="col-first">
+        <h1>Commands</h1>
+        <nav class="d-flex align-items-center">
+          <a href="/library">Library<span class="lnr lnr-arrow-right"></span></a>
+          <a href="/library/commands">Commands</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Banner Area -->
+
+<div th:if="${#lists.isEmpty(orders)}" th:include="empty-card :: empty-card" class="row justify-content-center border shadow m-4 p-5"></div>
+<!--Content    -->
+<div th:if="${! #lists.isEmpty(orders)}" class="p-4">
+  <div th:each="order : ${orders}" class="row justify-content-center">
+    <div  class="col-md-12 row library l-bg-orange-dark">
+      <div class="col-md-3">
+        <strong>
+          <span th:text="${order.command.client.fullName}"></span>
+        </strong>
+        <p>Book: <strong th:text="${order.book.title} +' for $'+${order.book.price + order.book.deliveryCost}"></strong></p>
+        <p th:text="${order.command.date}"></p>
+      </div>
+      <div class="col-md-3">
+        <p>Email: <span th:text="${order.command.client.email}"></span></p>
+        <p>Address: <span th:text="${order.command.client.address}"></span></p>
+      </div>
+      <div th:if="${order.state==T(com.project.ecommerce.enums.OrderState).PENDING}" class="actions">
+        <div class="accept feedback">
+          <strong data-toggle="modal" th:data-target="${'#acceptModal'+(order.id)}">Deliver</strong>
+        </div>
+        <div class="decline feedback mt-2">
+          <strong data-toggle="modal" th:data-target="${'#declineModal'+(order.id)}">Decline</strong>
+        </div>
+      </div>
+      <div th:if="${order.state==T(com.project.ecommerce.enums.OrderState).DELIVERED}" class="actions">
+        <div class="feedback">
+          <ul class="list">
+            <li>
+              <a th:if="${order.rating!=null}" class="active">
+                <span>Rating</span>:
+                <i th:if="${order.rating >= 1}" th:each="starNumber : ${#numbers.sequence(1, order.rating)}" class="fa fa-star"></i><i th:if="${order.rating % 1 != 0}" class="fa fa-star-half-full"></i><i th:if="${5 - order.rating>=1 && order.rating % 1 <= 0.5}" th:each="starNumber : ${#numbers.sequence(1, 5 - order.rating - order.rating % 1 )}" class="fa fa-star-o"></i><i th:if="${6 - order.rating - order.rating % 1 > 1 && order.rating % 1 > 0.5}" th:each="starNumber : ${#numbers.sequence(1, 6 - order.rating - order.rating % 1 )}" class="fa fa-star-o"></i>
+              </a>
+              <a th:if="${order.rating==null}" class="active">
+                <span class="font-italic">Not rated yet</span>
+                </a>
+            </li>
+          </ul>
+
+        </div>
+      </div>
+      <div th:if="${order.state==T(com.project.ecommerce.enums.OrderState).CANCELED}" class="actions">
+        <div class="feedback decline">
+          <strong>Declined</strong>
+        </div>
+      </div>
+    </div>
+    <!-- Bootstrap Modal -->
+    <div th:if="${order.state==T(com.project.ecommerce.enums.OrderState).PENDING}">
+      <div class="modal fade" th:id="${'declineModal'+(order.id)}">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="container d-flex justify-content-center mt-5 ">
+              <div class="text-center mb-5 login_form">
+                <span class="name mb-3 fw-500" style="color: black!important;" th:text="${order.book.title}"></span>
+                <br/>
+                <span class="text-black-50">
+                  To
+                  <span th:text="${order.command.client.fullName}"></span>
+                  leaving in
+                  <span th:text="${order.command.client.address}"></span>
+                </span>
+                <br/>
+                <small class="text-black-50 mb-3">Do you confirm declining this order?</small>
+                <form th:action="${'/library/decline-order?orderId='+order.id}" method="post" class="contact_form">
+                  <div class="col-md-12 mt-3">
+                    <div class="form-group">
+                      <textarea aria-required="true" class="form-control" name="reason" id="reason" rows="1" placeholder="Please tell us the reason ... " required></textarea>
+                    </div>
+                  </div>
+                  <div class="col-md-12 form-group mt-2">
+                    <button type="submit" value="submit" class="primary-btn">Decline</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" th:id="${'acceptModal'+(order.id)}">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="container d-flex justify-content-center mt-5 ">
+              <div class="text-center mb-5 login_form">
+                <span class="name mb-3 fw-500" style="color: black!important;" th:text="${order.book.title}"></span>
+                <br/>
+                <span class="text-black-50">
+                  <span th:text="${order.command.client.fullName}"></span>
+                  leaving in
+                  <span th:text="${order.command.client.address}"></span>
+                </span>
+                <br/>
+                <small class="text-black-50">Do you confirm accepting this order?</small>
+
+                <div class="col-md-12 form-group mt-2">
+                  <a  class="primary-btn" th:href="${'/library/accept-order?orderId='+order.id}">Accept</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!--End content-->
+
+<!-- Start Footer Area-->
+<div th:include="footer :: footer" class="footer-area section_gap" id="about-us"></div>
+<!-- End Footer Area  -->
+
+<!--Toast start-->
+<div id="toast-container-success"
+     class="toast-container l-bg-orange-dark"
+     style="display:none; position: fixed; bottom: 20px; left: 20px; z-index: 11; padding: 5px 10px; border-radius: 5px; width: 220px!important; ">
+
+  <div class="toast" role="alert" aria-live="assertive" aria-atomic="true"></div>
+  <div class="toast-header">
+    <strong>Message</strong>
+    <button type="button" class="ml-1 mb-1 close" data-dismiss="toast" aria-label="Close" onclick="hideAlert()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="toast-body">Order has been accepted!</div>
+</div>
+<div id="toast-container-success-decline"
+     class="toast-container l-bg-orange-dark"
+     style="display:none; position: fixed; bottom: 20px; left: 20px; z-index: 11; padding: 5px 10px; border-radius: 5px; width: 220px!important; ">
+
+  <div class="toast" role="alert" aria-live="assertive" aria-atomic="true"></div>
+  <div class="toast-header">
+    <strong>Message</strong>
+    <button type="button" class="ml-1 mb-1 close" data-dismiss="toast" aria-label="Close" onclick="hideAlert()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="toast-body">Order has been declined!</div>
+</div>
+<div id="toast-container-failed"
+     class="toast-container l-bg-red-dark"
+     style="display:none; position: fixed; bottom: 20px; left: 20px; z-index: 11; padding: 5px 10px; border-radius: 5px; width: 185px!important; ">
+
+  <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+
+  </div>
+  <div class="toast-header">
+    <strong>Message</strong>
+    <button type="button" class="ml-1 mb-1 close" data-dismiss="toast" aria-label="Close" onclick="hideAlert()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="toast-body">Something went wrong!</div>
+</div>
+<!--Toast end  -->
+
+<script type="text/javascript" th:src="@{/js/vendor/jquery-2.2.4.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/vendor/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.ajaxchimp.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.nice-select.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.sticky.js}"></script>
+<script type="text/javascript" th:src="@{/js/nouislider.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/countdown.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/owl.carousel.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/functions.js}"></script>
+<script type="text/javascript" th:src="@{/js/main.js}"></script>
+</body>
+</html>

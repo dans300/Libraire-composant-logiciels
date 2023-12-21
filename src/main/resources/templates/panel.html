@@ -1,0 +1,217 @@
+<html  lang="zxx" class="no-js" style="scroll-behavior: smooth;">
+
+<head>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" th:href="@{/img/fav.png}">
+    <!-- Author Meta -->
+    <meta name="author" content="CodePixar">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>DBShopping</title>
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/css/linearicons.css}"/>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/themify-icons.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/owl.carousel.css}"/>
+    <link rel="stylesheet" th:href="@{/css/nice-select.css}"/>
+    <link rel="stylesheet" th:href="@{/css/nouislider.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.css}"/>
+    <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.skinFlat.css}"/>
+    <link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+
+<body>
+
+<!-- Start Header Area -->
+<header th:include="header :: header" class="header_area sticky-header"></header>
+<!-- End Header Area -->
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Panel</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="/">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="/panel">Panel</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+<!--================Order Details Area =================-->
+<div th:if="${command != null}" class="m-5 border shadow p-4">
+    <h3 class="title_confirmation col-md-12 text-center mb-3" style="color: limegreen">Thank you. Your order has been received.</h3>
+    <div class="row order_d_inner d-flex justify-content-center mt-5">
+        <div class="col-lg-5">
+            <div class="details_item">
+                <h4>Order Info</h4>
+                <ul class="list">
+                    <li><a href="#"><span>Order number</span> : <span th:text="${command.id}"></span></a></li>
+                    <li><a href="#"><span>Date</span> :  <span th:text="${command.date}"></span></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-1"></div>
+        <div class="col-lg-5">
+            <div class="details_item">
+                <h4>Shipping Address</h4>
+                <ul class="list">
+                    <li><a href="#"><span>Address</span> : <span th:text="${command.client.address}"></span></a></li>
+                    <li><a href="#"><span>Contact</span> : <span th:text="${command.client.email}"></span></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:if="${command == null}">
+    <div id="empty-books" th:include="empty-card :: empty-card" th:class="${#lists.isEmpty(books)} ? 'row justify-content-center border shadow m-4 p-5' : 'd-none row justify-content-center border shadow m-4 p-5'"></div>
+    <section id="not-empty-books" th:class="${#lists.isEmpty(books)}? 'd-none order_details section_gap' : 'order_details section_gap'">
+        <div class="container">
+            <div class="order_details_table">
+                <h2>Order Details</h2>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Product</th>
+                            <th scope="col">Shipping</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Total</th>
+                            <th scope="col" class="actions-col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="book : ${books}" th:id="${'product-row-'+(book.id)}">
+                            <td>
+                                <p th:text="${book.title}"></p>
+                            </td>
+                            <td>
+                                <p>$<span th:text="${book.deliveryCost}"></span></p>
+                            </td>
+                            <td>
+                                <p>$<span th:text="${book.price}"></span></p>
+                            </td>
+                            <td>
+                                <p>$<span th:text="${book.price + book.deliveryCost}"></span></p>
+                            </td>
+                            <td class="actions-col">
+                                <button class="custom-button" title="remove it" th:attr="onclick=${'removeFromCart(' + book.id + ','+(book.price+book.deliveryCost)+', 1)'}">
+                                    <span class="fa fa-trash"></span>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h4>Total</h4>
+                            </td>
+                            <td>
+                                <h5></h5>
+                            </td>
+                            <td>
+                                <h5></h5>
+                            </td>
+                            <td>
+                                <h5>$<span th:text="${totalCost}" id="total-cost-container"></span></h5>
+                            </td>
+                            <td class="actions-col">
+                                <button class="custom-button" onclick="proceed('proceed')" title="proceed the command">
+                                    <span class="fa fa-arrow-right"></span>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div th:if="${authenticated}" style="display: none" id="proceed" class="order_box">
+                    <form method="post" action="/client/add-command">
+                        <div class="payment_item">
+                            <div class="radion_btn">
+                                <input type="radio" id="f-option5" name="payment" required>
+                                <label for="f-option5">Check payments</label>
+                                <div class="check"></div>
+                            </div>
+                            <p>Please send a check to the library</p>
+                        </div>
+                        <div class="payment_item active">
+                            <div class="radion_btn">
+                                <input type="radio" id="f-option6" name="payment" required>
+                                <label for="f-option6">Paypal </label>
+                                <img th:src="@{/img/product/card.jpg}" alt="">
+                                <div class="check"></div>
+                            </div>
+                            <p>Pay via PayPal; you can pay with your credit card if you don’t have a PayPal
+                                account.
+                            </p>
+                        </div>
+                        <div class="creat_account d-flex align-items-center">
+                            <input type="checkbox" id="f-option4" name="accepted" required>
+                            <label for="f-option4" class="mr-1">I’ve read and accept the </label>
+                            <a>terms & conditions*</a>
+                        </div>
+                        <button type="submit" class="primary-btn col-md-12">Proceed the command</button>
+                    </form>
+                </div >
+                <div th:if="${!authenticated}" style="display: none" id="proceed" class="row" >
+                    <div class="order_box col-md-12 row d-flex align-items-center justify-content-center">
+                        <div class="col-md-5">
+                            <span class="custom-span">To proceed the command you should be logged in :</span>
+                        </div>
+                        <div class="col-md-3"><a class="primary-btn" href="/login?redirect-to=/panel">Go to login</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<!--================End Order Details Area =================-->
+
+<!-- start footer Area -->
+<div th:include="footer :: footer" class="footer-area section_gap" id="about-us"></div>
+<!-- End footer Area -->
+
+<!--Toast start-->
+<div id="toast-container-failed"
+     class="toast-container l-bg-red-dark"
+     style="display:none; position: fixed; bottom: 20px; left: 20px; z-index: 11; padding: 5px 10px; border-radius: 5px; width: 185px!important; ">
+
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+
+    </div>
+    <div class="toast-header">
+        <strong>Message</strong>
+        <button type="button" class="ml-1 mb-1 close" data-dismiss="toast" aria-label="Close" onclick="hideAlert()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body">Something went wrong!</div>
+</div>
+<!--Toast end  -->
+
+<script type="text/javascript" th:src="@{/js/vendor/jquery-2.2.4.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/vendor/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.ajaxchimp.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.nice-select.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.sticky.js}"></script>
+<script type="text/javascript" th:src="@{/js/nouislider.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/countdown.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/owl.carousel.min.js}"></script>
+
+<script type="text/javascript" th:src="@{/js/main.js}"></script>
+<script type="text/javascript" th:src="@{/js/functions.js}"></script>
+</body>
+</html>

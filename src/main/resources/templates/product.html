@@ -1,0 +1,94 @@
+<product class="col-lg-3 col-md-6">
+    <div class="single-product">
+        <img class="img-fluid" th:src="${'/img/product/p' + (book.id % 5) + '.jpg'}" alt="">
+        <div class="product-details">
+            <h6><span th:text="${book.title}"></span></h6>
+            <div class="price d-flex justify-content-between align-items-center">
+                <h6>$<span th:text="${book.price}"></span></h6>
+                <h6 style="color: lightgrey;">Delivery : $<span th:text="${book.deliveryCost}"></span></h6>
+            </div>
+            <div class="prd-bottom">
+                <a th:class="${book.inCart} ? 'social-info d-none' : 'social-info'"  th:id="${'add-'+(book.id)}" th:attr="onclick=${'addToCart(' + book.id + ')'}">
+                    <span class="ti-plus"></span>
+                    <p class="hover-text">add to bag</p>
+                </a>
+                <a th:class="${book.inCart} ? 'social-info' : 'social-info d-none'"  th:id="${'remove-'+(book.id)}" th:attr="onclick=${'removeFromCart(' + book.id + ','+(book.price+book.deliveryCost)+', 0)'}">
+                    <span class="ti-minus"></span>
+                    <p class="hover-text">remove</p>
+                </a>
+                <a class="social-info" data-toggle="modal" th:data-target="${'#customModal'+(book.id)}">
+                    <span class="lnr lnr-eye"></span>
+                    <p class="hover-text">details</p>
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+    <!--	pop-up starts -->
+    <div class="modal fade" th:id="${'customModal'+(book.id)}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="product_image_area p-0"> <!--th:fragment="popup(data)"-->
+                    <div class="container p-0">
+                        <div class="row s_product_inner d-flex justify-content-between align-items-center">
+                            <div class="col-md-5">
+                                <img th:src="${'/img/product/p' + (book.id % 5) + '.jpg'}" style="width: 100%">
+                            </div>
+                            <div class="col-md-7 p-3 pl-5 pr-5">
+                                <div class="s_product_text mt-2 mb-2" >
+                                    <h3><span th:text="${book.title}"></span></h3>
+                                    <h2>$<span th:text="${book.price + book.deliveryCost}"></span></h2>
+                                    <ul>
+                                        <li>
+                                            <a class="active">
+                                                <span>Categories</span> :
+                                                <span th:each="category, iterStat : ${book.categories}" th:text="${category.description + (iterStat.last ? '.' : ', ')}"></span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="active">
+                                                <span>Authors</span> :
+                                                <span th:each="author, iterStat : ${book.authors}" th:text="${author.fullName + (iterStat.last ? '.' : ', ')}"></span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="active"><span>Rating</span> :
+
+                                                <i th:if="${book.rating >= 1}" th:each="starNumber : ${#numbers.sequence(1, book.rating)}" class="fa fa-star"></i><i th:if="${book.rating % 1 != 0}" class="fa fa-star-half-full"></i><i th:if="${5 - book.rating>=1 && book.rating % 1 <= 0.5}" th:each="starNumber : ${#numbers.sequence(1, 5 - book.rating - book.rating % 1 )}" class="fa fa-star-o"></i><i th:if="${6 - book.rating - book.rating % 1 > 1 && book.rating % 1 > 0.5}" th:each="starNumber : ${#numbers.sequence(1, 6 - book.rating - book.rating % 1 )}" class="fa fa-star-o"></i>
+
+                                                <span th:text="${book.votes}"></span> reviews
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a>
+                                                <span>State</span> :
+                                                <span th:text="${book.state}"></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <p class="mb-5">
+                                        <span th:text="${book.description}"></span>
+                                    </p>
+                                    <div class="card_area d-flex align-items-center">
+                                        <button  th:attr="onclick=${'addToCart(' + book.id + ')'}" th:id="${'add-from-popup-'+(book.id)}" th:class="${book.inCart} ? 'primary-btn pt-2 pb-2 pl-5 pr-5 d-none' : 'primary-btn pt-2 pb-2 pl-5 pr-5'">
+                                            <span class="fa fa-shopping-cart fa-1x"></span>
+                                        </button>
+                                        <button  th:attr="onclick=${'removeFromCart(' + book.id + ','+(book.price+book.deliveryCost)+', 0)'}" th:id="${'remove-from-popup-'+(book.id)}" th:class="${book.inCart} ? 'primary-btn pt-2 pb-2 pl-5 pr-5' : 'primary-btn pt-2 pb-2 pl-5 pr-5 d-none'">
+                                            <span class="fa fa-trash fa-1x"></span>
+                                        </button>
+                                        <button class="primary-btn pt-2 pb-2 pl-5 pr-5" data-dismiss="modal" aria-label="Close">
+                                            <span class="fa fa-close fa-1x"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--	pop-up ends   -->
+
+</product>
